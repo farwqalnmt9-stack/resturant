@@ -1,0 +1,1 @@
+{"version":"0.2.0","configurations":[{"name":"Django: runserver (Conda)","type":"debugpy","request":"launch","python":"C:\\Users\\Asus\\miniconda3\\envs\\titan-gym\\python.exe","program":"${workspaceFolder}\\manage.py","args":["runserver"],"django":true,"justMyCode":true}]}

@@ -1,0 +1,7 @@
+.venv/
+.conda/
+__pycache__/
+*.py[cod]
+db.sqlite3
+media/products/
+media/categories/

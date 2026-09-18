@@ -1,0 +1,1 @@
+{% extends 'base.html' %}{% block content %}<section class="empty success"><p class="eyebrow">تم الاستلام</p><h1>شكراً، طلبك رقم #{{ order.order_number }}</h1><p>حالة الطلب الحالية: <b>{{ order.get_status_display }}</b></p><a class="button primary" href="{% url 'menu:list' %}">طلب جديد</a></section>{% endblock %}

@@ -1,0 +1,427 @@
+/* Menu wall: ui-ux-studio two-lane marquee with retained side rails. */
+.page-intro:has(+ .filters) {
+  min-height: 210px;
+  padding: clamp(2.4rem, 5vw, 4.7rem) clamp(1.25rem, 8vw, 9rem) 2rem;
+  color: #f7f5f0;
+  background: radial-gradient(circle at 12% 0%, rgba(218, 165, 32, 0.18), transparent 32%), linear-gradient(120deg, #101012, #0c0c0d);
+  border-bottom: 1px solid var(--line);
+}
+
+.page-intro:has(+ .filters) h1 {
+  max-width: 1120px;
+  margin: 0;
+  font-size: clamp(2.25rem, 4.5vw, 4.35rem);
+  color: #f7f5f0;
+}
+
+.page-intro:has(+ .filters) .eyebrow {
+  margin-bottom: 0.65rem;
+  color: var(--gold-light);
+}
+
+.page-intro:has(+ .filters) + .filters {
+  display: grid;
+  grid-template-columns: minmax(0, 1.45fr) repeat(2, minmax(180px, 0.8fr)) auto;
+  gap: 12px;
+  margin: 0;
+  padding: 1rem clamp(1.25rem, 8vw, 9rem) 1.25rem;
+  background: #101012;
+  border-bottom: 1px solid var(--line);
+}
+
+.page-intro:has(+ .filters) + .filters label {
+  gap: 6px;
+  color: #f7f5f0;
+  font-size: 0.68rem;
+}
+
+.page-intro:has(+ .filters) + .filters input,
+.page-intro:has(+ .filters) + .filters select {
+  min-height: 48px;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid rgba(246, 215, 140, 0.3);
+  border-radius: 8px;
+  background: #1a1a1d;
+  color: #f7f5f0;
+}
+
+.page-intro:has(+ .filters) + .filters input::placeholder {
+  color: #aaa59c;
+}
+
+.page-intro:has(+ .filters) + .filters input:focus,
+.page-intro:has(+ .filters) + .filters select:focus {
+  outline: 3px solid rgba(246, 215, 140, 0.56);
+  outline-offset: 2px;
+  border-color: var(--gold-light);
+}
+
+.page-intro:has(+ .filters) + .filters .primary {
+  align-self: end;
+  min-height: 48px;
+  padding-inline: 1.35rem;
+  border-radius: 9px;
+  font-size: 0.75rem;
+}
+
+@media (max-width: 760px) {
+  .page-intro:has(+ .filters) {
+    min-height: 0;
+  }
+
+  .page-intro:has(+ .filters) h1 {
+    font-size: 2.3rem;
+  }
+
+  .page-intro:has(+ .filters) + .filters {
+    grid-template-columns: 1fr;
+  }
+
+  .page-intro:has(+ .filters) + .filters .primary {
+    width: 100%;
+  }
+}
+
+.carousel-wall {
+  --rail-gap: 18px;
+  --wall-height: 820px;
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr) 220px;
+  gap: var(--rail-gap);
+  height: var(--wall-height);
+  padding: 24px clamp(18px, 3vw, 44px);
+  overflow: hidden;
+  background: #0c0c0d;
+  direction: rtl;
+}
+
+.carousel-center {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  gap: var(--rail-gap);
+  height: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.carousel-lane {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background: #101012;
+  box-shadow: inset 0 0 0 1px rgba(246, 215, 140, 0.14);
+}
+
+.carousel-lane::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.carousel-lane--horizontal::after {
+  background: linear-gradient(90deg, #101012 0%, transparent 5%, transparent 95%, #101012 100%);
+}
+
+/* Anchor the oversized marquee track to the physical left edge.  The page is
+   RTL, but the moving rail itself must be LTR or its right-aligned box moves
+   away from the viewport and exposes an empty area. */
+.carousel-lane--horizontal {
+  direction: ltr;
+}
+
+.carousel-lane--vertical::after {
+  background: linear-gradient(180deg, #101012 0%, transparent 6%, transparent 94%, #101012 100%);
+}
+
+.carousel-track {
+  display: flex;
+}
+
+.carousel-lane--horizontal .carousel-track {
+  width: max-content;
+  height: 100%;
+  align-items: center;
+  direction: ltr;
+  animation-duration: 48s;
+  animation-timing-function: cubic-bezier(0, 0, 1, 1);
+  animation-iteration-count: infinite;
+}
+
+.carousel-lane--top .carousel-track {
+  animation-name: marquee-left;
+}
+
+.carousel-lane--bottom .carousel-track {
+  animation-name: marquee-right;
+}
+
+.carousel-lane--vertical {
+  height: 100%;
+}
+
+.carousel-lane--vertical .carousel-track {
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  animation-duration: 44s;
+  animation-timing-function: cubic-bezier(0, 0, 1, 1);
+  animation-iteration-count: infinite;
+}
+
+.carousel-lane--right .carousel-track {
+  animation-name: marquee-down;
+}
+
+.carousel-lane--left .carousel-track {
+  animation-name: marquee-up;
+}
+
+/* Only the lane under the pointer/focus pauses. */
+.carousel-lane:hover > .carousel-track,
+.carousel-lane:focus-within > .carousel-track {
+  animation-play-state: paused;
+}
+
+.menu-carousel-card {
+  flex: 0 0 auto;
+  display: grid;
+  overflow: hidden;
+  color: #f7f5f0;
+  background: linear-gradient(145deg, #222226, #151517);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(246, 215, 140, 0.17);
+  direction: rtl;
+  transition: transform 160ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-carousel-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.38), inset 0 0 0 1px rgba(246, 215, 140, 0.62);
+}
+
+.menu-carousel-card--horizontal {
+  width: 330px;
+  height: calc((var(--wall-height) - var(--rail-gap)) / 2 - 20px);
+  margin-inline: 8px;
+  border-radius: 16px;
+  grid-template-rows: 205px minmax(0, 1fr);
+}
+
+.menu-carousel-card--vertical {
+  width: 198px;
+  height: 286px;
+  margin-block: 8px;
+  border-radius: 12px;
+  grid-template-rows: 116px minmax(0, 1fr);
+}
+
+.menu-card-art {
+  min-height: 0;
+  background: linear-gradient(rgba(12, 12, 13, 0.1), rgba(12, 12, 13, 0.1)), url('/media/site/aleppo-grill-hero.png') center / cover;
+}
+
+.menu-carousel-card:nth-child(3n) .menu-card-art {
+  background-image: linear-gradient(rgba(12, 12, 13, 0.1), rgba(12, 12, 13, 0.1)), url('/media/site/hero-grill.png');
+}
+
+.menu-carousel-card:nth-child(3n + 2) .menu-card-art {
+  background-image: linear-gradient(rgba(12, 12, 13, 0.1), rgba(12, 12, 13, 0.1)), url('/media/site/hero-mezze.png');
+}
+
+.menu-card-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.menu-card-copy {
+  display: flex;
+  min-height: 0;
+  flex-direction: column;
+  padding: 15px 17px;
+}
+
+.menu-card-copy small {
+  color: #f6d78c;
+  font-size: 0.66rem;
+}
+
+.menu-card-copy h2 {
+  margin: 0.25rem 0;
+  font: 600 1.35rem/1.35 'Playfair Display', 'Noto Kufi Arabic', serif;
+}
+
+.menu-card-copy p {
+  margin: 0 0 auto;
+  color: var(--mist);
+  font-size: 0.7rem;
+  line-height: 1.65;
+}
+
+.menu-card-copy > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.menu-card-copy b {
+  color: #f6d78c;
+  font-size: 0.72rem;
+}
+
+.menu-card-copy form {
+  margin: 0;
+}
+
+.menu-card-copy button,
+.menu-card-button {
+  display: inline-grid;
+  min-width: 48px;
+  min-height: 44px;
+  place-items: center;
+  padding: 7px 11px;
+  border: 0;
+  background: #f6d78c;
+  color: #17120a;
+  font: 700 0.7rem 'Noto Kufi Arabic', sans-serif;
+  transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), background 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.menu-card-copy button:hover {
+  background: #fff1c8;
+  transform: translateY(-2px);
+}
+
+.menu-card-copy button:active {
+  transform: scale(0.97);
+}
+
+.menu-carousel-card--vertical .menu-card-copy {
+  padding: 11px;
+}
+
+.menu-carousel-card--vertical .menu-card-copy h2 {
+  font-size: 1.02rem;
+}
+
+.menu-carousel-card--vertical .menu-card-copy p {
+  display: none;
+}
+
+@keyframes marquee-left {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes marquee-right {
+  from { transform: translate3d(-50%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes marquee-up {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(0, -50%, 0); }
+}
+
+@keyframes marquee-down {
+  from { transform: translate3d(0, -50%, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+
+@media (max-width: 1100px) {
+  .carousel-wall {
+    grid-template-columns: 170px minmax(0, 1fr) 170px;
+  }
+
+  .menu-carousel-card--horizontal {
+    width: 290px;
+  }
+
+  .menu-carousel-card--vertical {
+    width: 150px;
+    height: 270px;
+  }
+
+  .menu-carousel-card--vertical .menu-card-copy h2 {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 780px) {
+  .carousel-wall {
+    --wall-height: auto;
+    grid-template-columns: minmax(0, 1fr);
+    height: auto;
+    padding: 12px;
+  }
+
+  .carousel-center {
+    order: 1;
+    height: auto;
+    grid-template-rows: repeat(2, 300px);
+  }
+
+  .carousel-lane--horizontal {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .carousel-lane--horizontal .carousel-track {
+    animation: none;
+    transform: none;
+  }
+
+  .carousel-lane--vertical {
+    height: 190px;
+  }
+
+  .carousel-lane--right {
+    order: 2;
+  }
+
+  .carousel-lane--left {
+    order: 3;
+  }
+
+  .carousel-lane--vertical .carousel-track {
+    width: max-content;
+    height: 100%;
+    flex-direction: row;
+    animation-name: marquee-left;
+  }
+
+  .carousel-lane--left .carousel-track {
+    animation-name: marquee-right;
+  }
+
+  .menu-carousel-card--horizontal {
+    width: 220px;
+    height: 280px;
+    grid-template-rows: 125px minmax(0, 1fr);
+  }
+
+  .menu-carousel-card--vertical {
+    width: 190px;
+    height: 170px;
+    margin: 10px 7px;
+    grid-template-rows: 86px minmax(0, 1fr);
+  }
+
+  .menu-carousel-card--vertical .menu-card-copy > div {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .carousel-lane {
+    overflow: auto;
+  }
+
+  .carousel-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}

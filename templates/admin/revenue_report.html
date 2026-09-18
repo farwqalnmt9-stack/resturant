@@ -1,0 +1,33 @@
+{% extends "admin/base_site.html" %}
+{% load l10n %}
+
+{% block content %}
+<div id="content-main">
+  <h1>تقرير الإيرادات</h1>
+  <p>يعرض التقرير قيمة <strong>الطلبات التي تم تسليمها فقط</strong>، بما فيها رسوم التوصيل، ضمن الفترة التي تختارها.</p>
+  <form method="get" style="margin: 24px 0; padding: 18px; background: var(--darkened-bg, #f8f8f8); border: 1px solid #ddd;">
+    <div style="display:flex; gap:16px; flex-wrap:wrap; align-items:end;">
+      <p style="margin:0"><label for="start"><strong>من تاريخ</strong></label><br><input id="start" type="date" name="start" value="{{ start_date|date:'Y-m-d' }}"></p>
+      <p style="margin:0"><label for="end"><strong>إلى تاريخ</strong></label><br><input id="end" type="date" name="end" value="{{ end_date|date:'Y-m-d' }}"></p>
+      <p style="margin:0"><button class="button" type="submit">عرض التقرير</button></p>
+    </div>
+  </form>
+  {% if invalid_range %}<p class="errornote">يجب أن يكون تاريخ البداية قبل تاريخ النهاية أو مساوياً له.</p>{% endif %}
+  <div class="module" style="max-width:760px">
+    <table>
+      <caption style="padding:12px;text-align:right;font-weight:bold">ملخص الفترة من {{ start_date|date:'Y/m/d' }} إلى {{ end_date|date:'Y/m/d' }}</caption>
+      <tbody>
+        <tr><th scope="row">عدد الطلبات المسلّمة</th><td>{{ orders_count }}</td></tr>
+        <tr><th scope="row">إجمالي الدخل</th><td><strong style="font-size:1.25rem">{{ revenue|localize }} ل.س</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="module" style="margin-top:24px">
+    <h2>تفاصيل الطلبات المحتسبة</h2>
+    <table>
+      <thead><tr><th>رقم الطلب</th><th>العميل</th><th>التاريخ</th><th>الإجمالي</th></tr></thead>
+      <tbody>{% for order in orders %}<tr><td><a href="{% url 'admin:orders_order_change' order.pk %}">#{{ order.order_number }}</a></td><td>{{ order.customer_name }}</td><td>{{ order.created_at|date:'Y/m/d H:i' }}</td><td>{{ order.total|localize }} ل.س</td></tr>{% empty %}<tr><td colspan="4">لا توجد طلبات مسلّمة ضمن هذه الفترة.</td></tr>{% endfor %}</tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

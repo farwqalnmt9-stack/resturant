@@ -1,0 +1,28 @@
+{% extends 'base.html' %}{% load static %}
+{% block head %}<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"><link rel="stylesheet" href="{% static 'css/checkout.css' %}">{% endblock %}
+{% block content %}
+<section class="checkout-hero"><p class="eyebrow">إتمام الطلب</p><h1>خطوتين وطلبك <em>بالطريق</em></h1><p>أدخل رقمك وحدد مكان التوصيل بالطريقة الأنسب لك.</p></section>
+<form method="post" class="checkout-shell" novalidate>{% csrf_token %}
+  <div class="checkout-main">
+    <section class="checkout-card">
+      <header class="checkout-card-heading"><span class="checkout-step">01</span><div><h2>رقم التواصل</h2><p>نتصل بك فقط لتأكيد الطلب أو عند وصول السائق.</p></div></header>
+      <label class="checkout-field checkout-field--phone" for="{{ form.phone.id_for_label }}">{{ form.phone.label }}{{ form.phone }}{% for error in form.phone.errors %}<small class="checkout-error">{{ error }}</small>{% endfor %}</label>
+    </section>
+    <section class="checkout-card">
+      <header class="checkout-card-heading"><span class="checkout-step">02</span><div><h2>موقع التوصيل</h2><p>اختر الخريطة للدقة، أو اكتب العنوان إذا كان ذلك أسهل.</p></div></header>
+      <fieldset class="location-method"><legend class="sr-only">{{ form.location_method.label }}</legend>{% for choice in form.location_method %}<label class="location-option">{{ choice.tag }}<span>{{ choice.choice_label }}</span></label>{% endfor %}</fieldset>
+      <div class="location-panel" data-location-panel="map">
+        <div class="map-header"><div><h3>حدد موقعك على الخريطة</h3><p>اضغط على الخريطة أو استخدم تحديد موقعي الحالي.</p></div><button class="ghost" type="button" id="locate">تحديد موقعي الحالي</button></div>
+        <div id="delivery-map" data-lat="{{ form.delivery_latitude.value|default:'' }}" data-lng="{{ form.delivery_longitude.value|default:'' }}"></div>{{ form.delivery_latitude }}{{ form.delivery_longitude }}
+        <p id="location-status" role="status">بانتظار اختيار الموقع.</p>{% for error in form.delivery_latitude.errors %}<p class="checkout-error">{{ error }}</p>{% endfor %}
+      </div>
+      <div class="location-panel" data-location-panel="manual" hidden>
+        <label class="checkout-field" for="{{ form.delivery_address.id_for_label }}">{{ form.delivery_address.label }}{{ form.delivery_address }}{% for error in form.delivery_address.errors %}<small class="checkout-error">{{ error }}</small>{% endfor %}</label>
+      </div>
+      <p class="cash-checkout-note"><b>الدفع نقدًا عند الاستلام.</b> ستظهر رسوم التوصيل ضمن إجمالي الطلب.</p>
+    </section>
+  </div>
+  <aside class="summary checkout-summary"><p class="eyebrow">ملخص الطلب</p><h2>قبل التأكيد</h2><div class="checkout-summary-list">{% for row in rows %}<div class="checkout-summary-line"><span>{{ row.product.name }} × {{ row.quantity }}</span><b>{{ row.line_total }} ل.س</b></div>{% endfor %}<div class="checkout-summary-line"><span>رسوم التوصيل</span><b>{{ delivery_fee }} ل.س</b></div><div class="checkout-summary-line checkout-summary-total"><span>الإجمالي</span><b>{{ subtotal|add:delivery_fee }} ل.س</b></div></div><button class="button primary full" type="submit">تأكيد الطلب</button></aside>
+</form>
+{% endblock %}
+{% block scripts %}<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="{% static 'js/map.js' %}"></script>{% endblock %}

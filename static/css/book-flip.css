@@ -1,0 +1,142 @@
+/* Real sheet turn: a two-sided paper layer folds around the book spine. */
+/* The whole home now shares the warm charcoal and soft gold light of the menu header. */
+.cinema-hero {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(218, 165, 32, .18), transparent 34%),
+    linear-gradient(120deg, #1a1a1d, #101012);
+}
+
+.hero-slides::after {
+  background:
+    radial-gradient(circle at 12% 5%, rgba(218, 165, 32, .2), transparent 42%),
+    linear-gradient(100deg, rgba(26, 26, 29, .9) 0%, rgba(22, 22, 24, .78) 46%, rgba(16, 16, 18, .62) 100%);
+}
+
+.intro-chapter,
+.book-section,
+.flavor-theater {
+  background:
+    radial-gradient(circle at 12% 0%, rgba(218, 165, 32, .14), transparent 34%),
+    linear-gradient(120deg, #1a1a1d, #141416 62%, #101012);
+}
+.book-section .section-heading { color: #f7f5f0; }
+.book-section .section-heading h2 { color: #f7f5f0; }
+
+.book {
+  perspective: 2200px;
+  perspective-origin: 50% 46%;
+  isolation: isolate;
+  background: linear-gradient(135deg, #403727, #221d16 48%, #4a3e2c);
+  box-shadow: inset 0 0 0 1px rgba(246, 215, 140, 0.34), 0 34px 68px rgba(0, 0, 0, 0.58);
+}
+
+.book::before,
+.book::after { background: repeating-linear-gradient(0deg, #f5eddd, #f5eddd 2px, #d7cbb7 3px, #d7cbb7 4px); }
+.book-spine { background: linear-gradient(90deg, #100d0a, #6e563a 48%, #19120c); box-shadow: 0 0 16px rgba(0, 0, 0, 0.7); }
+
+.book-page {
+  color: #292116;
+  background: linear-gradient(135deg, #f5eedf, #e8ddc9 48%, #f7f0e1);
+  box-shadow: inset 0 0 32px rgba(87, 65, 39, 0.17);
+  transform: none;
+  transition: none;
+}
+.book-page.is-turning { opacity: 1; transform: none; }
+.book-image { background: #e7dcc8; border-color: rgba(83, 62, 37, 0.34); }
+.book-image img { mix-blend-mode: multiply; }
+.book-copy > span { color: #8b651f; }
+.book-copy p:not(.eyebrow) { color: #625747; }
+.book-copy a { color: #2d2418; border-bottom-color: #a77d2d; }
+.book-controls button { color: #f7f0e1; border-color: rgba(246, 215, 140, 0.4); }
+
+.book-turn-sheet {
+  display: none;
+  position: absolute;
+  z-index: 8;
+  overflow: visible;
+  transform: rotateY(0deg);
+  transform-style: preserve-3d;
+  box-shadow: -12px 8px 24px rgba(0, 0, 0, 0.26);
+}
+
+.book-turn-sheet.is-ready { display: block; }
+.book-turn-sheet.is-folding { transform: rotateY(var(--turn-angle)); transition: transform 780ms cubic-bezier(0.76, 0, 0.24, 1); }
+
+.book-turn-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(90deg, rgba(0, 0, 0, 0.58), transparent 34%, rgba(246, 215, 140, 0.15) 64%, rgba(0, 0, 0, 0.5));
+  transform: translateZ(2px);
+  transition: opacity 780ms cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+.book-turn-sheet.is-folding::after { opacity: 0.86; }
+
+.book-turn-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow: hidden;
+  background: linear-gradient(135deg, #f5eedf, #e8ddc9 48%, #f7f0e1);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: inset 0 0 0 1px rgba(83, 62, 37, 0.22), inset 0 0 34px rgba(87, 65, 39, 0.2);
+}
+
+.book-turn-face::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.018) 0 1px, transparent 1px 4px);
+  mix-blend-mode: screen;
+  opacity: 0.35;
+}
+
+.book-turn-face .book-copy {
+  width: 100%;
+  min-height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.book-turn-back { transform: rotateY(180deg); }
+.book-turn-sheet.is-turn-right { transform-origin: 0 50%; --turn-angle: -180deg; }
+.book-turn-sheet.is-turn-left { transform-origin: 100% 50%; --turn-angle: 180deg; }
+
+.book-controls button { transition: color 150ms cubic-bezier(.16, 1, .3, 1), transform 150ms cubic-bezier(.16, 1, .3, 1); }
+.book-controls button:hover { color: var(--gold-light); transform: translateY(-1px); }
+.book-controls button:active { transform: scale(.97); }
+.book-controls button[aria-disabled="true"] { opacity: .5; pointer-events: none; }
+
+/* Refine the flavour stage so it reads as one focused home-page moment. */
+.flavor-theater {
+  padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 8vw, 9rem);
+  background: radial-gradient(circle at 10% 10%, rgba(218, 165, 32, 0.1), transparent 28%), #0c0c0d;
+}
+
+.theater-heading {
+  max-width: 760px;
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
+.theater-heading h2 {
+  font-size: clamp(2.6rem, 4.7vw, 4.7rem);
+  line-height: 1.05;
+}
+
+.theater-heading p:not(.eyebrow) { margin-inline: auto; }
+.theater-shell { max-width: 1240px; margin: 0 auto; border-radius: 18px; overflow: hidden; box-shadow: 0 26px 56px rgba(0, 0, 0, 0.34); }
+.theater-nav { padding: .8rem; background: #151517; }
+.theater-option { min-height: 68px; border-radius: 8px; }
+.theater-stage { min-height: 540px; }
+.scene-glass { border-radius: 14px; box-shadow: 0 18px 42px rgba(0, 0, 0, 0.34); }
+.theater-controls { bottom: 1.2rem; }
+
+@media (prefers-reduced-motion: reduce) { .book-turn-sheet { display: none !important; } }
+@media (max-width: 760px) { .theater-heading { text-align: start; } .theater-shell { border-radius: 12px; } }
+@media (max-width: 560px) { .book { perspective: none; } }

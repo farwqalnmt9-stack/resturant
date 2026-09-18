@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}حسابي | سُفرة حلب{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'css/account.css' %}">{% endblock %}
+{% block content %}
+<section class="account-hero">
+  <div>
+    <p class="eyebrow">حساب الضيف</p>
+    <h1>أهلاً {{ user.username }}،<br><em>المائدة بانتظارك.</em></h1>
+    <p>من هنا تستطيع مراجعة طلباتك والعودة إلى نكهاتك المفضلة.</p>
+  </div>
+  <div class="account-monogram" aria-hidden="true">س</div>
+</section>
+<section class="account-content">
+  <div class="account-stats" aria-label="ملخص الحساب">
+    <article><small>إجمالي الطلبات</small><strong>{{ order_count }}</strong><span>طلب مسجّل</span></article>
+    <article><small>طلبات تم تسليمها</small><strong>{{ delivered_count }}</strong><span>وصلت إليك بنجاح</span></article>
+    <article><small>إجمالي المدفوع</small><strong>{{ total_spent }} <i>ل.س</i></strong><span>للطلبات المسلّمة</span></article>
+  </div>
+  <div class="account-grid">
+    <section class="account-panel">
+      <div class="panel-heading"><div><p class="eyebrow">آخر الطلبات</p><h2>سجلّك الأخير</h2></div><a href="{% url 'orders:my_orders' %}">كل الطلبات <span aria-hidden="true">←</span></a></div>
+      {% for order in latest_orders %}
+        <a class="mini-order" href="{% url 'orders:my_orders' %}"><span class="mini-order-number">#{{ order.order_number }}</span><span>{{ order.created_at|date:'Y/m/d' }}</span><mark class="status-{{ order.status }}">{{ order.get_status_display }}</mark><b>{{ order.total }} ل.س</b></a>
+      {% empty %}
+        <div class="account-empty"><p>لم تسجّل أي طلب بعد.</p><a class="button primary" href="{% url 'menu:list' %}">اكتشف القائمة</a></div>
+      {% endfor %}
+    </section>
+    <aside class="account-actions">
+      <p class="eyebrow">خطوتك التالية</p><h2>شو عبالك<br>اليوم؟</h2>
+      <p>افتح القائمة، اختر أطباقك، وخلي الباقي علينا.</p>
+      <a class="button primary full" href="{% url 'menu:list' %}">تصفّح القائمة</a>
+      <a class="account-logout" href="{% url 'accounts:logout' %}">تسجيل الخروج</a>
+    </aside>
+  </div>
+</section>
+{% endblock %}

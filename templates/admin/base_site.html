@@ -1,0 +1,6 @@
+{% extends "admin/base.html" %}
+
+{% block userlinks %}
+  <a href="{% url 'admin-revenue-report' %}">تقرير الإيرادات</a> /
+  {{ block.super }}
+{% endblock %}

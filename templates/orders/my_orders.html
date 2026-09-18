@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}طلباتي | سُفرة حلب{% endblock %}
+{% block head %}<link rel="stylesheet" href="{% static 'css/account.css' %}">{% endblock %}
+{% block content %}
+<section class="orders-hero"><div><p class="eyebrow">حسابي / سجل الطلبات</p><h1>كل طلب،<br><em>إله حكاية.</em></h1><p>راجع تفاصيل طلباتك وحالتها في مكان واحد.</p></div><a class="button line" href="{% url 'menu:list' %}">طلب جديد <span aria-hidden="true">←</span></a></section>
+<section class="orders-content">
+  <div class="orders-heading"><div><p class="eyebrow">سجل الطلبات</p><h2>طلباتك السابقة</h2></div><span>{{ orders|length }} طلب</span></div>
+  <div class="orders-list">
+    {% for order in orders %}
+      <article class="order-card">
+        <div class="order-card-top"><div><span class="order-label">رقم الطلب</span><h2>#{{ order.order_number }}</h2></div><mark class="status-{{ order.status }}">{{ order.get_status_display }}</mark></div>
+        <div class="order-card-meta"><span>تاريخ الطلب <b>{{ order.created_at|date:'Y/m/d' }}</b></span><span>طريقة الاستلام <b>{{ order.get_delivery_method_display }}</b></span></div>
+        <div class="order-card-items">{% for item in order.items.all|slice:':3' %}<span>{{ item.product_name }} × {{ item.quantity }}</span>{% endfor %}{% if order.items.count > 3 %}<span>وأصناف أخرى</span>{% endif %}</div>
+        <div class="order-card-total"><span>إجمالي الطلب</span><strong>{{ order.total }} <i>ل.س</i></strong></div>
+      </article>
+    {% empty %}
+      <div class="orders-empty"><p class="eyebrow">لا يوجد طلبات حتى الآن</p><h2>أول طلب إلو طعمة خاصة.</h2><a class="button primary" href="{% url 'menu:list' %}">اختَر من القائمة</a></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
